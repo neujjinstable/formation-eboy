@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eboy Academy Premium™</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0f;
+    color: #e8e8f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* PAGE SYSTEM */
+  .page { display: none; min-height: 100vh; flex-direction: column; }
+  .page.active { display: flex; }
+
+  /* ===== LANDING PAGE ===== */
+  #landing {
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: #0a0a0f;
+  }
+
+  #landing::before {
+    content: '';
+    position: absolute;
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(120,60,220,0.12) 0%, transparent 65%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -60%);
+    pointer-events: none;
+  }
+
+  #landing::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(236,72,153,0.07) 0%, transparent 65%);
+    bottom: 0; right: -100px;
+    pointer-events: none;
+  }
+
+  .landing-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 3rem 2rem;
+    max-width: 600px;
+  }
+
+  .logo-ring {
+    width: 90px; height: 90px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(236,72,153,0.1));
+    border: 1px solid rgba(124,58,237,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    margin: 0 auto 2rem;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .landing-eyebrow {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #7c3aed;
+    margin-bottom: 1.25rem;
+  }
+
+  .landing-title {
+    font-size: clamp(3rem, 10vw, 5.5rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    margin-bottom: 1.75rem;
+    background: linear-gradient(135deg, #fff 0%, #c4a8ff 60%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .landing-tagline {
+    font-size: 1.05rem;
+    color: #7070a8;
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 3rem;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .landing-tagline em {
+    color: #a78bfa;
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .btn-enter {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: #7c3aed;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 17px 40px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    letter-spacing: -0.01em;
+  }
+
+  .btn-enter:hover { background: #6d28d9; transform: scale(1.04); gap: 16px; }
+
+  .btn-enter .arrow { font-size: 1.1rem; transition: transform 0.25s; }
+  .btn-enter:hover .arrow { transform: translateX(3px); }
+
+  .landing-meta {
+    margin-top: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: #33335a;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+
+  .meta-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #7c3aed;
+    opacity: 0.6;
+  }
+
+  .landing-footer-note {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    color: #22224a;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  /* ===== MAIN SITE ===== */
+  #main {
+    flex-direction: column;
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* NAV */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .nav-logo { font-size: 0.9rem; font-weight: 700; color: #a78bfa; letter-spacing: -0.02em; }
+  .nav-logo span { color: #4040a0; font-weight: 400; }
+
+  .nav-cta {
+    background: rgba(124,58,237,0.15);
+    border: 1px solid rgba(124,58,237,0.3);
+    color: #a78bfa;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .nav-cta:hover { background: rgba(124,58,237,0.25); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    padding: 6rem 2rem 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(ellipse at 50% 0%, #1a0a3a 0%, #0a0a0f 60%);
+    overflow: hidden;
+  }
+
+  .badge-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(120,60,220,0.15);
+    border: 1px solid rgba(120,60,220,0.4);
+    color: #b08cf0;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 2rem;
+  }
+
+  h1 {
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #fff 0%, #c4a8ff 50%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: #a0a0b8;
+    max-width: 540px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+
+  .hero-sub strong { color: #d4bbff; font-weight: 500; }
+
+  .stats-row {
+    display: flex;
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat { text-align: center; }
+  .stat-num { font-size: 1.6rem; font-weight: 700; color: #fff; }
+  .stat-label { font-size: 0.75rem; color: #6060a0; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 2px; }
+
+  .cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #7c3aed;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 16px 36px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .cta-primary:hover { background: #6d28d9; transform: translateY(-2px); }
+
+  .price-tag { margin-top: 1rem; font-size: 0.85rem; color: #5050a0; }
+  .price-tag del { color: #404070; }
+  .price-tag strong { color: #a78bfa; font-size: 1rem; }
+
+  section {
+    padding: 5rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #7c3aed; margin-bottom: 0.75rem; }
+  .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 1rem; color: #f0f0ff; }
+  .section-desc { color: #7070a0; font-size: 1rem; line-height: 1.7; max-width: 500px; margin-bottom: 3rem; font-weight: 300; }
+
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .module-card { background: #0d0d18; padding: 2rem; position: relative; transition: background 0.2s; }
+  .module-card:hover { background: #12121f; }
+
+  .module-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 1.25rem; }
+  .icon-purple { background: rgba(124,58,237,0.15); }
+  .icon-pink { background: rgba(236,72,153,0.15); }
+  .icon-blue { background: rgba(59,130,246,0.12); }
+  .icon-amber { background: rgba(245,158,11,0.12); }
+  .icon-teal { background: rgba(20,184,166,0.12); }
+  .icon-coral { background: rgba(239,68,68,0.12); }
+
+  .module-card h3 { font-size: 1rem; font-weight: 600; color: #e0e0f8; margin-bottom: 0.5rem; }
+  .module-card p { font-size: 0.85rem; color: #5050a0; line-height: 1.6; font-weight: 300; }
+  .module-num { position: absolute; top: 2rem; right: 2rem; font-size: 0.7rem; color: #2a2a50; font-weight: 600; }
+
+  .sep { width: 100%; height: 1px; background: linear-gradient(to right, transparent, rgba(124,58,237,0.3), transparent); }
+
+  .tips-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 640px) { .tips-wrapper { grid-template-columns: 1fr; } }
+
+  .tip-card { background: #0d0d18; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1.5rem; }
+  .tip-card h3 { font-size: 0.9rem; font-weight: 600; color: #c0c0e8; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+  .tip-card h3::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #7c3aed; flex-shrink: 0; }
+  .tip-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .tip-list li { font-size: 0.83rem; color: #5060a0; line-height: 1.55; padding-left: 1rem; position: relative; font-weight: 300; }
+  .tip-list li::before { content: '—'; position: absolute; left: 0; color: #3a2a70; }
+
+  .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+  .review-card { background: #0d0d18; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1.5rem; }
+  .review-stars { color: #f59e0b; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 0.75rem; }
+  .review-text { font-size: 0.9rem; color: #8080c0; line-height: 1.6; font-style: italic; margin-bottom: 1rem; font-weight: 300; }
+  .review-author { font-size: 0.75rem; font-weight: 600; color: #4040a0; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  .pricing-section { text-align: center; padding: 5rem 2rem; background: radial-gradient(ellipse at 50% 100%, #1a0a3a 0%, #0a0a0f 60%); }
+  .pricing-card { max-width: 420px; margin: 3rem auto 0; background: #0d0d18; border: 1px solid rgba(124,58,237,0.3); border-radius: 24px; padding: 2.5rem; position: relative; overflow: hidden; }
+  .pricing-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, #7c3aed, #ec4899); }
+  .pricing-badge { display: inline-flex; background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3); color: #a78bfa; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 12px; border-radius: 100px; margin-bottom: 1.5rem; }
+  .pricing-price { font-size: 3.5rem; font-weight: 900; color: #fff; letter-spacing: -0.05em; }
+  .pricing-price sup { font-size: 1.5rem; vertical-align: top; margin-top: 0.8rem; }
+  .pricing-price del { font-size: 1.2rem; color: #333360; font-weight: 400; }
+  .pricing-perks { list-style: none; text-align: left; margin: 1.5rem 0 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .pricing-perks li { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; color: #7070c0; font-weight: 300; }
+  .pricing-perks li::before { content: '✓'; width: 20px; height: 20px; background: rgba(124,58,237,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #7c3aed; font-weight: 700; flex-shrink: 0; }
+  .cta-full { width: 100%; background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; font-size: 1rem; font-weight: 600; padding: 16px; border-radius: 12px; border: none; cursor: pointer; transition: all 0.2s; }
+  .cta-full:hover { opacity: 0.9; transform: translateY(-1px); }
+  .guarantee { margin-top: 1rem; font-size: 0.75rem; color: #3030a0; }
+
+  footer { text-align: center; padding: 2rem; border-top: 1px solid rgba(255,255,255,0.04); font-size: 0.75rem; color: #2a2a60; letter-spacing: 0.05em; }
+  footer span { color: #5050c0; }
+</style>
+</head>
+<body>
+
+<!-- ===== LANDING PAGE ===== -->
+<div id="landing" class="page active">
+  <div class="landing-inner">
+    <div class="logo-ring">🖤</div>
+    <p class="landing-eyebrow">Bienvenue</p>
+    <h2 class="landing-title">Eboy<br>Academy<br>Premium™</h2>
+    <p class="landing-tagline">
+      Tu es sur le point d'accéder à la formation la plus <em>sérieuse</em> du monde sur le fait de paraître <em>mystérieux</em> sur internet.
+    </p>
+    <button class="btn-enter" onclick="goToMain()">
+      Entrer dans l'académie <span class="arrow">→</span>
+    </button>
+    <div class="landing-meta">
+      <div class="meta-item"><div class="meta-dot"></div>97k élèves</div>
+      <div class="meta-item"><div class="meta-dot"></div>Certifié TikTok™</div>
+      <div class="meta-item"><div class="meta-dot"></div>Harvard des E-boys</div>
+    </div>
+  </div>
+  <p class="landing-footer-note">© 2026 Eboy Academy Premium™ · Formation fictive</p>
+</div>
+
+<!-- ===== MAIN SITE ===== -->
+<div id="main" class="page">
+
+  <nav class="nav">
+    <div class="nav-logo">Eboy Academy <span>Premium™</span></div>
+    <button class="nav-cta" onclick="document.querySelector('.pricing-section').scrollIntoView({behavior:'smooth'})">49€ → Rejoindre</button>
+  </nav>
+
+  <div class="hero">
+    <div class="badge-top">Formation certifiée TikTok™ 2026</div>
+    <h1>Eboy<br>Academy<br>Premium™</h1>
+    <p class="hero-sub">
+      La seule formation virale pour devenir un <strong>e-boy certifié de rang S</strong>.<br>
+      Look. Aura. Réseaux. Mystère. Tout ça pour <strong>49€</strong>.
+    </p>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num">97k+</div><div class="stat-label">Élèves satisfaits</div></div>
+      <div class="stat"><div class="stat-num">4.97</div><div class="stat-label">Note moyenne</div></div>
+      <div class="stat"><div class="stat-num">3 jours</div><div class="stat-label">Aura garantie</div></div>
+    </div>
+    <button class="cta-primary" onclick="document.querySelector('.pricing-section').scrollIntoView({behavior:'smooth'})">
+      ✦ Rejoindre la Masterclass
+    </button>
+    <p class="price-tag"><del>299€</del> → <strong>49€</strong> aujourd'hui seulement</p>
+  </div>
+
+  <section>
+    <p class="section-label">Programme</p>
+    <h2 class="section-title">6 modules d'élite</h2>
+    <p class="section-desc">Chaque module est conçu par des experts en aura et en vibe pour maximiser ton potentiel mystérieux.</p>
+    <div class="modules-grid">
+      <div class="module-card"><div class="module-num">01</div><div class="module-icon icon-purple">🖤</div><h3>Style Vestimentaire</h3><p>Oversize. Sombre. Accessoires stratégiques. Maîtrise l'art d'avoir l'air de ne pas essayer tout en essayant très fort.</p></div>
+      <div class="module-card"><div class="module-num">02</div><div class="module-icon icon-pink">💎</div><h3>Coiffure & Accessoires</h3><p>Boucles d'oreilles, bagues, chaînes, cheveux structurés. Le détail qui transforme un mortel en légende des timelines.</p></div>
+      <div class="module-card"><div class="module-num">03</div><div class="module-icon icon-blue">📸</div><h3>Photos Instagram</h3><p>Lumière douce, angle 3/4, regard dans le vide ou au plafond. On code le mystère en JPEG.</p></div>
+      <div class="module-card"><div class="module-num">04</div><div class="module-icon icon-amber">⚡</div><h3>Confiance & Charisme</h3><p>Parler peu mais dire des choses profondes. Ou du moins avoir l'air de le faire. La nuance, c'est tout.</p></div>
+      <div class="module-card"><div class="module-num">05</div><div class="module-icon icon-teal">🎧</div><h3>Playlist Vibes</h3><p>The Weeknd, Bladee, Lana, Playboi Carti selon l'humeur. Chaque titre est une déclaration d'identité.</p></div>
+      <div class="module-card"><div class="module-num">06</div><div class="module-icon icon-coral">🌙</div><h3>Glow Up Routine</h3><p>Skincare minimaliste, sommeil de 6h en ayant l'air d'en faire 8, et une posture de CEO du néant.</p></div>
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <section>
+    <p class="section-label">Le savoir</p>
+    <h2 class="section-title">Ce qu'on t'enseigne vraiment</h2>
+    <p class="section-desc">Des techniques testées en situation réelle par de vrais e-boys certifiés™.</p>
+    <div class="tips-wrapper">
+      <div class="tip-card">
+        <h3>Devenir un vrai e-boy</h3>
+        <ul class="tip-list">
+          <li>Style sombre ou oversize avec accessoires ciblés</li>
+          <li>Coiffure travaillée mais qui semble naturelle</li>
+          <li>Photos avec lumière douce et angles calculés</li>
+          <li>Musique tendance et attitude calme / distante</li>
+          <li>Rester soi-même plutôt que copier tout le monde</li>
+        </ul>
+      </div>
+      <div class="tip-card">
+        <h3>Trolling stratégique avec tes amis</h3>
+        <ul class="tip-list">
+          <li>Ouvre l'aperçu du site et fais des screenshots</li>
+          <li>Envoie le lien à tes amis sans contexte</li>
+          <li>Dis que tu as lancé une vraie formation premium</li>
+          <li>Ajoute de faux avis clients pour le réalisme</li>
+          <li>Attends les réactions et savoure</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <section>
+    <p class="section-label">Témoignages</p>
+    <h2 class="section-title">Ils ont transformé leur aura</h2>
+    <p class="section-desc">Des retours 100% authentiques de vrais élèves certifiés.</p>
+    <div class="reviews-grid">
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"J'ai gagné une aura folle en 3 jours. Ma voisine m'a regardé différemment. Ce n'est pas une coïncidence."</p><div class="review-author">— Mathéo R., Marseille</div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Mes amis ont cru que c'était un vrai business. J'ai failli leur vendre des places. Le module 2 est pépite."</p><div class="review-author">— Kevin X., Paris 11e</div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Je suis devenu mystérieux instantanément. Je ne parle plus beaucoup mais les gens m'écoutent. Puissant."</p><div class="review-author">— Enzo D., Lyon</div></div>
+    </div>
+  </section>
+
+  <div class="pricing-section">
+    <p class="section-label" style="color:#7c3aed;">Rejoindre</p>
+    <h2 class="section-title" style="text-align:center;">Pack VIP — Offre limitée</h2>
+    <p class="section-desc" style="text-align:center; margin:0 auto;">Cette offre expire dans exactement 24h. Ou dans 10 ans. On a pas encore décidé.</p>
+    <div class="pricing-card">
+      <span class="pricing-badge">Accès à vie</span>
+      <div class="pricing-price"><sup>€</sup>49 <del>299€</del></div>
+      <ul class="pricing-perks">
+        <li>6 modules complets en accès immédiat</li>
+        <li>Certificat officiel e-boy niveau S</li>
+        <li>Accès au Discord VIP (100% faux)</li>
+        <li>Playlist curatée par des experts en vibe</li>
+        <li>Garantie aura ou remboursé (non)</li>
+      </ul>
+      <button class="cta-full" onclick="this.textContent='✦ Merci pour votre confiance ✦'; setTimeout(()=>this.textContent='Rejoindre la Masterclass Premium →',2000)">
+        Rejoindre la Masterclass Premium →
+      </button>
+      <p class="guarantee">✦ Paiement sécurisé · Satisfait ou un peu moins satisfait · Harvard des E-boys certifié ✦</p>
+    </div>
+  </div>
+
+  <footer>© 2026 <span>Eboy Academy Premium™</span> · Tous droits réservés · Certifié TikTok · Formation fictive à but humoristique</footer>
+
+</div>
+
+<script>
+  function goToMain() {
+    document.getElementById('landing').classList.remove('active');
+    document.getElementById('main').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+</script>
+
+</body>
+</html>
